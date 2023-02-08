@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import com.example.githubapp.MarginItemDecoration
 import com.example.githubapp.RecyclerAdapter
 import com.example.githubapp.data.model.User
 import com.example.githubapp.databinding.FragmentMainBinding
@@ -47,5 +48,6 @@ class MainFragment : Fragment() {
 
         recyclerMain.adapter = RecyclerAdapter(listOfUser, requireContext())
         recyclerMain.layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
+        recyclerMain.addItemDecoration(MarginItemDecoration(1, 6, true))
     }
 }
