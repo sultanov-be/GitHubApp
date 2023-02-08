@@ -1,16 +1,13 @@
-package com.example.githubapp
+package com.example.githubapp.utils
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.githubapp.data.model.User
+import com.example.githubapp.data.model.ReposListItem
 import com.example.githubapp.databinding.ItemUsersBinding
 
 class RecyclerAdapter internal constructor(
-    private val listOfUsers: ArrayList<User>,
-    private val context: Context
+    private val listOfUsers: ArrayList<ReposListItem>
 ) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemUsersBinding) : RecyclerView.ViewHolder(binding.root)
@@ -24,17 +21,10 @@ class RecyclerAdapter internal constructor(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = with(holder.binding) {
         val user = listOfUsers[position]
 
-        if (user.avatar_url == null || user.avatar_url.isEmpty()) {
-            Glide.with(context).load(R.drawable.loading_img)
-                .into(imageView)
-        } else {
-            Glide.with(context).load(user.avatar_url)
-                .placeholder(R.drawable.loading_animation)
-                .error(R.drawable.loading_img)
-                .into(imageView)
+        textView.text = user.name
+        linkButton.setOnClickListener {
+            //TODO go to link
         }
-
-        textView.text = user.login
     }
 
     override fun getItemCount(): Int {

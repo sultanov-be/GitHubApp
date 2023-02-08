@@ -1,4 +1,4 @@
-package com.example.githubapp
+package com.example.githubapp.utils
 
 import android.graphics.Rect
 import android.view.View
