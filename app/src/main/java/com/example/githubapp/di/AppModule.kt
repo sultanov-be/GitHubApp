@@ -1,8 +1,8 @@
 package com.example.githubapp.di
 
 import com.example.githubapp.data.ApiService
-import com.example.githubapp.repository.MainDefaultRepository
-import com.example.githubapp.repository.MainRepository
+import com.example.githubapp.data.repository.MainDefaultRepository
+import com.example.githubapp.data.repository.MainRepository
 import com.example.githubapp.utils.DispatcherProvider
 import dagger.Module
 import dagger.Provides
