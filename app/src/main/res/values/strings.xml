@@ -2,4 +2,5 @@
     <string name="app_name">GitHubApp</string>
     <string name="github_users">GitHub Users</string>
     <string name="sample_user">Sample Repo</string>
+    <string name="link">link</string>
 </resources>
