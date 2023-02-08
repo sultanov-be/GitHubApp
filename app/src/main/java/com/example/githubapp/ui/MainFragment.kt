@@ -9,9 +9,11 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import com.bumptech.glide.Glide
+import com.example.githubapp.R
+import com.example.githubapp.data.model.ReposList
 import com.example.githubapp.utils.MarginItemDecoration
 import com.example.githubapp.databinding.FragmentMainBinding
 import com.example.githubapp.utils.RecyclerAdapter
@@ -26,7 +28,8 @@ class MainFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentMainBinding.inflate(layoutInflater)
 
         initAdapter()
@@ -42,13 +45,14 @@ class MainFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewModel.reposAll.observe(viewLifecycleOwner, Observer {  response ->
+        viewModel.reposAll.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     loadingBar(false)
                     response.data?.let {
                         repoAdapter.differ.submitList(it)
                     }
+                    setViews(response.data!!)
                 }
                 is Resource.Error -> {
                     loadingBar(false)
@@ -60,10 +64,17 @@ class MainFragment : Fragment() {
                     loadingBar(true)
                 }
             }
-        })
+        }
     }
 
-    private fun initAdapter(){
+    private fun setViews(item: ReposList) {
+        binding.userNickname.text = item[0].owner.login
+        Glide.with(requireContext()).load(item[0].owner.avatar_url)
+            .placeholder(R.drawable.loading_animation)
+            .error(R.drawable.loading_img).into(binding.userAvatar)
+    }
+
+    private fun initAdapter() {
         repoAdapter = RecyclerAdapter(requireContext())
         binding.recyclerMain.apply {
             adapter = repoAdapter
