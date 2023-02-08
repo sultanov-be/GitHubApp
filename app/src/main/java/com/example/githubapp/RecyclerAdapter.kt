@@ -24,13 +24,13 @@ class RecyclerAdapter internal constructor(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = with(holder.binding) {
         val user = listOfUsers[position]
 
-        if (user.avatar_url.isNotEmpty()) {
+        if (user.avatar_url == null || user.avatar_url.isEmpty()) {
+            Glide.with(context).load(R.drawable.loading_img)
+                .into(imageView)
+        } else {
             Glide.with(context).load(user.avatar_url)
                 .placeholder(R.drawable.loading_animation)
                 .error(R.drawable.loading_img)
-                .into(imageView)
-        } else {
-            Glide.with(context).load(R.drawable.loading_img)
                 .into(imageView)
         }
 
