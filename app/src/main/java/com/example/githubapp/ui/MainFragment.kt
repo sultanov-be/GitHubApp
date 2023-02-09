@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
@@ -34,8 +35,9 @@ class MainFragment : Fragment() {
         repoAdapter = RecyclerAdapter(requireContext())
 
         viewModel.getRepos("sultanov-be")
-        initAdapter()
         observeData()
+        initAdapter()
+        initSearch()
 
         return binding.root
     }
@@ -67,6 +69,23 @@ class MainFragment : Fragment() {
         }
     }
 
+    private fun initSearch() = with(binding) {
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if (query != null) viewModel.getRepos(query)
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+
+                    return false
+                }
+
+            }
+        )
+    }
+
     private fun setViews(item: ReposList) {
         binding.userNickname.text = item[0].owner.login
         Glide.with(requireContext()).load(item[0].owner.avatar_url)
@@ -79,7 +98,6 @@ class MainFragment : Fragment() {
             binding.recyclerMain.addItemDecoration(MarginItemDecoration(1, 25, false))
             isFirstTime = false
         }
-        repoAdapter = RecyclerAdapter(requireContext())
         binding.recyclerMain.apply {
             adapter = repoAdapter
             layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
