@@ -3,4 +3,6 @@
     <string name="github_users">GitHub Repositories</string>
     <string name="sample_user">Sample Repo</string>
     <string name="link">link</string>
+    <string name="type_a_nickname">Type a nickname.</string>
+    <string name="error">No such nickname in GitHub.</string>
 </resources>

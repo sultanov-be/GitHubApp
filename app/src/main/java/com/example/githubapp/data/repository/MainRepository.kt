@@ -4,5 +4,5 @@ import com.example.githubapp.data.model.ReposList
 import com.example.githubapp.utils.Resource
 
 interface MainRepository {
-    suspend fun getRepos(): Resource<ReposList>
+    suspend fun getRepos(nickname: String): Resource<ReposList>
 }

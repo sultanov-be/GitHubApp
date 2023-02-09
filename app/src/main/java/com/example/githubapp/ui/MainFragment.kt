@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
@@ -34,6 +35,7 @@ class MainFragment : Fragment() {
         repoAdapter = RecyclerAdapter(requireContext())
 
         initAdapter()
+        initSearch()
         observeData()
 
         return binding.root
@@ -54,7 +56,7 @@ class MainFragment : Fragment() {
                     setViews(response.data!!)
                 }
                 is Resource.Error -> {
-                    loadingBar(false)
+                    showError()
                     response.message?.let { message ->
                         Log.e("RetrofitAAA", "An error occured: $message")
                     }
@@ -66,27 +68,56 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun setViews(item: ReposList) {
-        binding.userNickname.text = item[0].owner.login
-        Glide.with(requireContext()).load(item[0].owner.avatar_url)
-            .placeholder(R.drawable.loading_animation)
-            .error(R.drawable.loading_img).into(binding.userAvatar)
+    private fun initSearch() = with(binding) {
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if (query != null) viewModel.getRepos(query)
+                    loadingBar(true)
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+
+                    return false
+                }
+
+            }
+        )
     }
 
-    private fun initAdapter() {
+    private fun setViews(item: ReposList) = with(binding) {
+        try {
+            searchView.clearFocus()
+            userNickname.text = item[0].owner.login
+
+            Glide.with(requireContext()).load(item[0].owner.avatar_url)
+                .placeholder(R.drawable.loading_animation)
+                .error(R.drawable.loading_img).into(binding.userAvatar)
+
+        } catch (e: IndexOutOfBoundsException) {
+            showError()
+        }
+    }
+
+    private fun initAdapter() = with(binding) {
         if (isFirstTime) {
-            binding.recyclerMain.addItemDecoration(MarginItemDecoration(1, 25, false))
+            recyclerMain.addItemDecoration(MarginItemDecoration(1, 25, false))
             isFirstTime = false
         }
-        repoAdapter = RecyclerAdapter(requireContext())
-        binding.recyclerMain.apply {
-            adapter = repoAdapter
-            layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
+        try {
+            recyclerMain.apply {
+                adapter = repoAdapter
+                layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
+            }
+        } catch (e: IndexOutOfBoundsException) {
+            showError()
         }
     }
 
     private fun loadingBar(isLoading: Boolean) = with(binding) {
         if (isLoading) {
+            mainText.visibility = GONE
             loadingBar.visibility = VISIBLE
             mainLayout.visibility = INVISIBLE
             userAvatar.visibility = GONE
@@ -97,5 +128,15 @@ class MainFragment : Fragment() {
             userAvatar.visibility = VISIBLE
             userNickname.visibility = VISIBLE
         }
+    }
+
+    private fun showError() = with(binding) {
+        mainText.visibility = VISIBLE
+        mainText.text = getString(R.string.error)
+
+        loadingBar.visibility = GONE
+        mainLayout.visibility = GONE
+        userAvatar.visibility = GONE
+        userNickname.visibility = GONE
     }
 }
