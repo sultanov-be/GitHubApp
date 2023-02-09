@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_bg">@color/black</color>
+    <color name="item_bg">#302F2F</color>
+    <color name="item_text_bg">@color/white</color>
+    <color name="loading_bar">@color/white</color>
+</resources>

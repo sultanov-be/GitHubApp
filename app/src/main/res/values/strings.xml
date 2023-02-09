@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">GitHubApp</string>
+    <string name="github_users">GitHub Repositories</string>
+    <string name="sample_user">Sample Repo</string>
+    <string name="link">link</string>
+    <string name="type_a_nickname">Type a nickname.</string>
+    <string name="error">No such nickname in GitHub.</string>
+    <string name="nick_error">Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.</string>
 </resources>
