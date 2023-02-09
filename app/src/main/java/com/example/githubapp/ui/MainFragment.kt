@@ -23,13 +23,15 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainFragment : Fragment() {
     private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: FragmentMainBinding
-    lateinit var repoAdapter: RecyclerAdapter
+    private lateinit var repoAdapter: RecyclerAdapter
+    private var isFirstTime = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainBinding.inflate(layoutInflater)
+        repoAdapter = RecyclerAdapter(requireContext())
 
         initAdapter()
         observeData()
@@ -39,8 +41,6 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
-
-        recyclerMain.addItemDecoration(MarginItemDecoration(1, 6, true))
     }
 
     private fun observeData() {
@@ -74,6 +74,10 @@ class MainFragment : Fragment() {
     }
 
     private fun initAdapter() {
+        if (isFirstTime) {
+            binding.recyclerMain.addItemDecoration(MarginItemDecoration(1, 6, true))
+            isFirstTime = false
+        }
         repoAdapter = RecyclerAdapter(requireContext())
         binding.recyclerMain.apply {
             adapter = repoAdapter
