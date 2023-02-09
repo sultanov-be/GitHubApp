@@ -75,7 +75,7 @@ class MainFragment : Fragment() {
 
     private fun initAdapter() {
         if (isFirstTime) {
-            binding.recyclerMain.addItemDecoration(MarginItemDecoration(1, 6, true))
+            binding.recyclerMain.addItemDecoration(MarginItemDecoration(1, 25, false))
             isFirstTime = false
         }
         repoAdapter = RecyclerAdapter(requireContext())
