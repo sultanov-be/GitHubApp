@@ -5,8 +5,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -88,7 +87,7 @@ class MainFragment : Fragment() {
             mainLayout.visibility = INVISIBLE
         } else {
             mainLayout.visibility = VISIBLE
-            loadingBar.visibility = INVISIBLE
+            loadingBar.visibility = GONE
         }
     }
 }
