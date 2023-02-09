@@ -19,13 +19,8 @@ class MainViewModel @Inject constructor(
 ) : ViewModel(), LifecycleObserver {
 
     val reposAll: MutableLiveData<Resource<ReposList>> = MutableLiveData()
-
-    init {
-        getRepos()
-    }
-
-    private fun getRepos() = viewModelScope.launch(dispatcher.io) {
+    fun getRepos(nickname: String) = viewModelScope.launch(dispatcher.io) {
         reposAll.postValue(Resource.Loading())
-        reposAll.postValue(repository.getRepos())
+        reposAll.postValue(repository.getRepos(nickname))
     }
 }

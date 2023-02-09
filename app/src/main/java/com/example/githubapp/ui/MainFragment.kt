@@ -33,6 +33,7 @@ class MainFragment : Fragment() {
         binding = FragmentMainBinding.inflate(layoutInflater)
         repoAdapter = RecyclerAdapter(requireContext())
 
+        viewModel.getRepos("sultanov-be")
         initAdapter()
         observeData()
 
