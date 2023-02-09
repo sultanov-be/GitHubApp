@@ -89,9 +89,13 @@ class MainFragment : Fragment() {
         if (isLoading) {
             loadingBar.visibility = VISIBLE
             mainLayout.visibility = INVISIBLE
+            userAvatar.visibility = GONE
+            userNickname.visibility = GONE
         } else {
             mainLayout.visibility = VISIBLE
             loadingBar.visibility = GONE
+            userAvatar.visibility = VISIBLE
+            userNickname.visibility = VISIBLE
         }
     }
 }
