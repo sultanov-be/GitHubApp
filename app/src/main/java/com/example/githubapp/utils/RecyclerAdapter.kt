@@ -1,17 +1,17 @@
 package com.example.githubapp.utils
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubapp.data.model.ReposListItem
 import com.example.githubapp.databinding.ItemUsersBinding
 
-
-class RecyclerAdapter internal constructor(val context: Context) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter internal constructor(private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemUsersBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -37,8 +37,9 @@ class RecyclerAdapter internal constructor(val context: Context) : RecyclerView.
         val user = differ.currentList[position]
 
         textView.text = user.name
+
         linkButton.setOnClickListener {
-            Toast.makeText(context, "It will open a link",Toast.LENGTH_SHORT).show()
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(user.html_url)))
         }
     }
 

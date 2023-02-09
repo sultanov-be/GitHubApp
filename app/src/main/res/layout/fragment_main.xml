@@ -16,9 +16,10 @@
             android:id="@+id/main_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/toolbar_bg"
             android:elevation="0dp"
             app:contentInsetStart="0dp"
-            app:layout_scrollFlags="scroll|snap">
+            app:layout_scrollFlags="scroll|enterAlways">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -33,21 +34,34 @@
                     android:text="@string/github_users"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/user_avatar"
                     style="@style/ToolbarImageStyle"
                     android:src="@drawable/loading_img"
+                    android:visibility="invisible"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/bar_title" />
+                    app:layout_constraintTop_toBottomOf="@id/bar_title"
+                    app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
 
                 <TextView
                     android:id="@+id/user_nickname"
+                    style="@style/NicknameStyle"
                     android:text="@string/sample_user"
-                    app:layout_constraintStart_toEndOf="@id/user_avatar"
-                    app:layout_constraintTop_toBottomOf="@id/bar_title"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@id/user_avatar"
                     app:layout_constraintEnd_toEndOf="parent"
-                    style="@style/NicknameStyle" />
+                    app:layout_constraintStart_toEndOf="@id/user_avatar"
+                    app:layout_constraintTop_toBottomOf="@id/bar_title" />
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/user_avatar"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -56,10 +70,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_layout"
-        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/design_default_color_secondary"
+        android:background="@color/main_bg"
+        android:padding="8dp"
+        android:visibility="invisible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.recyclerview.widget.RecyclerView

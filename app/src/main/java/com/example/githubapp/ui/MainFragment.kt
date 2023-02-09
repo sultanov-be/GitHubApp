@@ -5,8 +5,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,13 +23,15 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainFragment : Fragment() {
     private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: FragmentMainBinding
-    lateinit var repoAdapter: RecyclerAdapter
+    private lateinit var repoAdapter: RecyclerAdapter
+    private var isFirstTime = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainBinding.inflate(layoutInflater)
+        repoAdapter = RecyclerAdapter(requireContext())
 
         initAdapter()
         observeData()
@@ -40,8 +41,6 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
-
-        recyclerMain.addItemDecoration(MarginItemDecoration(1, 6, true))
     }
 
     private fun observeData() {
@@ -75,6 +74,10 @@ class MainFragment : Fragment() {
     }
 
     private fun initAdapter() {
+        if (isFirstTime) {
+            binding.recyclerMain.addItemDecoration(MarginItemDecoration(1, 25, false))
+            isFirstTime = false
+        }
         repoAdapter = RecyclerAdapter(requireContext())
         binding.recyclerMain.apply {
             adapter = repoAdapter
@@ -86,9 +89,13 @@ class MainFragment : Fragment() {
         if (isLoading) {
             loadingBar.visibility = VISIBLE
             mainLayout.visibility = INVISIBLE
+            userAvatar.visibility = GONE
+            userNickname.visibility = GONE
         } else {
             mainLayout.visibility = VISIBLE
-            loadingBar.visibility = INVISIBLE
+            loadingBar.visibility = GONE
+            userAvatar.visibility = VISIBLE
+            userNickname.visibility = VISIBLE
         }
     }
 }
