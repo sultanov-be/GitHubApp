@@ -56,7 +56,7 @@ class MainFragment : Fragment() {
                     setViews(response.data!!)
                 }
                 is Resource.Error -> {
-                    showError()
+                    showError(true)
                     response.message?.let { message ->
                         Log.e("RetrofitAAA", "An error occured: $message")
                     }
@@ -72,18 +72,27 @@ class MainFragment : Fragment() {
         searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    if (query != null) viewModel.getRepos(query)
-                    loadingBar(true)
+                    if (queryIsAcceptable(query)) {
+                        viewModel.getRepos(query!!)
+                        loadingBar(true)
+                    } else {
+                        showError(false)
+                    }
+
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-
                     return false
                 }
 
             }
         )
+    }
+
+    private fun queryIsAcceptable(q: String?): Boolean {
+        return if (q == null || q == "") false
+        else !('.' in q || ',' in q || '!' in q || '?' in q || '(' in q || ')' in q)
     }
 
     private fun setViews(item: ReposList) = with(binding) {
@@ -96,7 +105,7 @@ class MainFragment : Fragment() {
                 .error(R.drawable.loading_img).into(binding.userAvatar)
 
         } catch (e: IndexOutOfBoundsException) {
-            showError()
+            showError(true)
         }
     }
 
@@ -111,7 +120,7 @@ class MainFragment : Fragment() {
                 layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
             }
         } catch (e: IndexOutOfBoundsException) {
-            showError()
+            showError(true)
         }
     }
 
@@ -130,9 +139,11 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun showError() = with(binding) {
+    private fun showError(error: Boolean) = with(binding) {
         mainText.visibility = VISIBLE
-        mainText.text = getString(R.string.error)
+
+        if (!error) mainText.text = getString(R.string.nick_error)
+        else mainText.text = getString(R.string.error)
 
         loadingBar.visibility = GONE
         mainLayout.visibility = GONE
