@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+import okhttp3.OkHttpClient
 
 private const val BASE_URL = "https://api.github.com/"
 
@@ -21,11 +22,14 @@ private const val BASE_URL = "https://api.github.com/"
 class AppModule {
     @Singleton
     @Provides
-    fun provideApi(): ApiService = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(ApiService::class.java)
+    fun provideApi(): ApiService =
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(OkHttpClient.Builder().build())
+            .build()
+            .create(ApiService::class.java)
+
 
     @Singleton
     @Provides

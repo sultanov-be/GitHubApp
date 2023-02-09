@@ -8,7 +8,6 @@ import javax.inject.Inject
 class MainDefaultRepository @Inject constructor(
     private val api: ApiService
 ) : MainRepository {
-
     override suspend fun getRepos(nickname: String): Resource<ReposList> {
         return try {
             val response = api.getAllRepos(nickname)
@@ -18,6 +17,7 @@ class MainDefaultRepository @Inject constructor(
             } else {
                 Resource.Error(response.message())
             }
+
         } catch (e: Exception) {
             Resource.Error(e.message ?: "An error occurred")
         }
