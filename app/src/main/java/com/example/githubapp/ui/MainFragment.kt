@@ -18,6 +18,7 @@ import com.example.githubapp.utils.MarginItemDecoration
 import com.example.githubapp.databinding.FragmentMainBinding
 import com.example.githubapp.utils.RecyclerAdapter
 import com.example.githubapp.utils.Resource
+import com.example.githubapp.utils.Validator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -72,7 +73,7 @@ class MainFragment : Fragment() {
         searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    if (queryIsAcceptable(query)) {
+                    if (Validator.validateNickname(query)) {
                         viewModel.getRepos(query!!)
                         loadingBar(true)
                     } else {
@@ -88,11 +89,6 @@ class MainFragment : Fragment() {
 
             }
         )
-    }
-
-    private fun queryIsAcceptable(q: String?): Boolean {
-        return if (q == null || q == "") false
-        else !('.' in q || ',' in q || '!' in q || '?' in q || '(' in q || ')' in q)
     }
 
     private fun setViews(item: ReposList) = with(binding) {
